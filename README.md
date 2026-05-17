@@ -243,10 +243,3 @@ These were also used in the author's setup alongside this card:
 ## License
 
 MIT License — free to use, modify, and share.
-
----
-
-## Credits
-
-Built for a SunPower residential solar installation in Texas.
-Developed iteratively with real inverter data from a PVS6 system with 19 AC Module Type H panels.
