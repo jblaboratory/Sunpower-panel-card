@@ -17,7 +17,7 @@
  * Resource: /local/sunpower-panel-card.js?v=20
  */
 
-const CARD_VERSION = '3.9.2';
+const CARD_VERSION = '3.9.3';
 
 // Panel order persistence using HA's frontend_user_data WebSocket API
 // This stores data IN HOME ASSISTANT SERVER — survives any browser clear
@@ -257,12 +257,19 @@ class SunpowerPanelCard extends HTMLElement {
 
   _detectInverters() {
     if (!this._hass) return [];
-    const RE = /^sensor\.inverter_[eEaA]\d{14}_power$/;
+    // Match sensor.inverter_<ANY_SERIAL>_power
+    // Serial can be any alphanumeric string of any length/format
+    // Match sensor.inverter_<SERIAL>_power where serial has no underscores
+    // (Enhanced SunPower serials are alphanumeric only — no underscores)
+    const RE = /^sensor\.inverter_[^_]+_power$/;
     return Object.entries(this._hass.states)
       .filter(([id]) => RE.test(id))
       .map(([id, s]) => ({
         entity_id: id,
-        serial: (id.match(/[EeAa]\d{14}/) || [''])[0].toUpperCase(),
+        serial: (() => {
+          const m = id.match(/^sensor\.inverter_([^_]+)_power$/);
+          return m ? m[1].toUpperCase() : id;
+        })(),
         power: (parseFloat(s.state) || 0) * 1000, // kW → W
         state: s.state,
         attributes: s.attributes,
@@ -356,7 +363,7 @@ class SunpowerPanelCard extends HTMLElement {
     this._lastFetch = Date.now();
     this._render(); // show loading state
 
-    const RE = /^sensor\.inverter_[eEaA]\d{14}_/;
+    const RE = /^sensor\.inverter_[^_]+_/;
     const powerIds = this._panels
       .filter(p => p.entity_id && RE.test(p.entity_id))
       .map(p => p.entity_id);
@@ -1524,7 +1531,7 @@ window.customCards.push({
 });
 
 console.info(
-  `%c SunPower Panel Card %c v${CARD_VERSION} — resource URL: /local/sunpower-panel-card.js?v=67 `,
+  `%c SunPower Panel Card %c v${CARD_VERSION} — resource URL: /local/sunpower-panel-card.js?v=68 `,
   'background:#f59e0b;color:#000;font-weight:700;padding:2px 4px;',
   'background:#111;color:#f59e0b;padding:2px 4px;'
 );
