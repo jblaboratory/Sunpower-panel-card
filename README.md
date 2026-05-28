@@ -2,7 +2,7 @@
 
 A custom Lovelace card that displays per-panel solar production from a SunPower PVS6 system, with color-coded status tiles, historical production charts, drag-to-arrange layout, and a detail popup for each panel.
 
-![SunPower Panel Card](https://img.shields.io/badge/version-3.9.3-orange) ![HA](https://img.shields.io/badge/Home%20Assistant-2024.1%2B-blue)
+![SunPower_Panel_Card](https://img.shields.io/badge/version-3.9.3-orange) ![HA](https://img.shields.io/badge/Home%20Assistant-2024.1%2B-blue)
 
 ![preview1](https://github.com/jblaboratory/Sunpower-panel-card/blob/main/solar-panel-level-preview1.png?raw=true)
 ![preview2](https://github.com/jblaboratory/Sunpower-panel-card/blob/main/solar-panel-level-preview2.png?raw=true)
