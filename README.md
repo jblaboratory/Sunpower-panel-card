@@ -2,7 +2,8 @@
 
 A custom Lovelace card that displays per-panel solar production from a SunPower PVS6 system, with color-coded status tiles, historical production charts, drag-to-arrange layout, and a detail popup for each panel.
 
-![SunPower Panel Card](https://img.shields.io/badge/version-3.9.2-orange) ![HA](https://img.shields.io/badge/Home%20Assistant-2024.1%2B-blue)
+![SunPower Panel Card](https://img.shields.io/badge/version-3.9.3-orange) ![HA](https://img.shields.io/badge/Home%20Assistant-2024.1%2B-blue)
+
 ![preview1](https://github.com/jblaboratory/Sunpower-panel-card/blob/main/solar-panel-level-preview1.png?raw=true)
 ![preview2](https://github.com/jblaboratory/Sunpower-panel-card/blob/main/solar-panel-level-preview2.png?raw=true)
 
@@ -36,12 +37,16 @@ A custom Lovelace card that displays per-panel solar production from a SunPower 
   - This integration creates one device per inverter with entities for Power, Lifetime Power, Temperature, Voltage, Amps, MPPT data, etc.
 
 ### Entity naming
-The card auto-detects inverters using this exact pattern:
+The card auto-detects inverters matching:
 ```
-sensor.inverter_E<14 digits>_power
+sensor.inverter_<SERIAL>_power
 ```
-Example: `sensor.inverter_e00122251234567_power`
-
+Where `<SERIAL>` is any alphanumeric string with no underscores. Examples:
+```
+sensor.inverter_e00122251088861_power   # SunPower E-series (14 digit)
+sensor.inverter_A12345678_power         # Other serial formats
+sensor.inverter_ZZ9876543210_power      # Any length, any prefix
+```
 If your entities follow this pattern, the card works with zero configuration.
 
 ---
@@ -226,6 +231,7 @@ These were also used in the author's setup alongside this card:
 
 | Version | Highlights |
 |---------|-----------|
+| 3.9.3 | Flexible serial detection — any format between `inverter_` and `_power` |
 | 3.9.2 | HA server storage for layout persistence — survives all browser clears |
 | 3.9.0 | IndexedDB persistence (superseded by 3.9.2) |
 | 3.8.0 | `slot_grid` config field approach (superseded) |
@@ -243,3 +249,10 @@ These were also used in the author's setup alongside this card:
 ## License
 
 MIT License — free to use, modify, and share.
+
+---
+
+## Credits
+
+Built for a SunPower residential solar installation in Prosper, Texas.
+Developed iteratively with real inverter data from a PVS6 system with 19 AC Module Type H panels.
